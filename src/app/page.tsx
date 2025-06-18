@@ -1,28 +1,45 @@
 'use client'
-
 import { useEffect, useState } from 'react'
-import ProductCard from '@/components/ProductCard'
 import { supabase } from '@/lib/supabaseClient'
-import type { Product } from '@/types'
+import { Product } from '@/types'
+import ProductCard from '@/components/ProductCard'
 
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase
-      .from('products')
-      .select('*')
-      .then(({ data }) => {
-        if (data) setProducts(data as Product[]) // dùng type assertion nếu cần
-      })
+    async function fetchProducts() {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching products:', error)
+        setLoading(false)
+        return
+      }
+
+      setProducts(data || [])
+      setLoading(false)
+    }
+
+    fetchProducts()
   }, [])
 
+  if (loading) return <div>Loading...</div>
+
   return (
-    <div>
-      <h1 className="text-3xl my-4">Products</h1>
-      <div className="grid grid-cols-3 gap-4">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Latest Products</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+          />
         ))}
       </div>
     </div>
