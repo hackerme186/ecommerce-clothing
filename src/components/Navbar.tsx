@@ -3,23 +3,6 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-<<<<<<< HEAD
-import type { Session, AuthChangeEvent } from '@supabase/supabase-js'
-
-export default function Navbar() {
-  const [user, setUser] = useState<any>(null)
-
-  useEffect(() => {
-    supabase.auth.getSession().then((res: { data: { session: Session | null }, error: any }) => {
-      setUser(res.data.session?.user ?? null)
-    })
-
-    supabase.auth.onAuthStateChange(
-      (_: AuthChangeEvent, session: Session | null) => {
-        setUser(session?.user ?? null)
-      }
-    )
-=======
 import type { Session, AuthChangeEvent, User } from '@supabase/supabase-js'
 
 export default function Navbar() {
@@ -44,7 +27,6 @@ export default function Navbar() {
     return () => {
       authListener?.subscription?.unsubscribe?.()
     }
->>>>>>> 764af88 (Your commit message)
   }, [])
 
   return (
