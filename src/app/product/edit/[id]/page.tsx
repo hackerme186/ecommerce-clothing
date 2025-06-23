@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import { Product } from '@/types'
 
 export default function EditProduct() {
   const { id } = useParams<{ id: string }>()
