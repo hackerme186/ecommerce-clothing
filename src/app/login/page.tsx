@@ -20,5 +20,9 @@ export default function LoginPage() {
       <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
       <button onClick={handleLogin}>Login</button>
     </div>
+
+
+
+
   )
 }
